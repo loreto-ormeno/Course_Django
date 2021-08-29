@@ -1,0 +1,70 @@
+{% extends "course_app/base.html" %}
+
+{% block title %} Add a student to all bootcamp courses {% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+   
+    {% if messages %}
+        <div class="alert {{ request.session.level_mensaje }} alert-dismissible" role="alert" >
+            <ul>
+                {% for message in messages %}
+                    <li><strong>{{message}}</strong></li>    
+                {% endfor %}                   
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </ul>
+        </div>        
+    {% endif %}    
+
+    <div class="container col-md-6 row justify-content-start">
+        <h3>Add a New Course</h3>
+            <form action="/create" method='POST'>
+                {% csrf_token %}
+                <div class="mb-3 row">
+                        <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                        <label for="desc" class="col-sm-3 col-form-label">Description:</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" class="form-control" name="desc" rows="3" id="desc" placeholder="Description"></textarea>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <input class="btn btn-success mt-3 justify-content-end" type="submit" value="Add">
+                        </div>
+                    </div>
+                </div>
+            </form>
+    </div>
+    <h3>Courses</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-strip">
+            <thead>
+                <tr class="table-dark">
+                    <th>Course Name</th>
+                    <th>Description</th>
+                    <th>Date Added</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in course %}
+                    <tr class="align-middle">
+                        <td>{{course.name}}</td>
+                        <td>{{course.desc}}</td>
+                        <td>{{course.created_at}}</td>
+                        <td><a href="/courses/destroy/{{course.id}}">Remove</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
